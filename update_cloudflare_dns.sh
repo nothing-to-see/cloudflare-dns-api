@@ -2,7 +2,7 @@
 
 
 ########        ################        ##############
-# v1.1 #        # Guillaume B. #        # 2019.11.04 #
+# v1.2 #        # Guillaume B. #        # 2019.11.04 #
 ########        ################        ##############
 
 ######################### Update Cloudflare DNS Records with API ############################
@@ -28,7 +28,7 @@
 #   script and share your result in comments.)
 #
 #
-# v1.2 will log results and comment/describe 
+# v1.3 will log results and comment/describe 
 #
 ############################################################################################
 
@@ -41,14 +41,14 @@ cloudflare_auth_api_key="changeme"
 #================================================================================
 
 
-if [ $old_ip = NULL ]
-  old_ip=$(wget -qO- http://ipecho.net/plain)
+if [ "$old_ip" = NULL ]
+  then old_ip=$(wget -qO- http://ipecho.net/plain)
 fi
 
 new_ip=$(wget -qO- http://ipecho.net/plain)
 
-if [ $new_ip != $old_ip ]
-    (curl -X GET "https://api.cloudflare.com/client/v4/zones/${cloudflare_dns_zone_id}/dns_records?type=A&content=${old_ip}&per_page=100" \
+if [ "$new_ip" != "$old_ip" ]
+    then (curl -X GET "https://api.cloudflare.com/client/v4/zones/${cloudflare_dns_zone_id}/dns_records?type=A&content=${old_ip}&per_page=100" \
     -H 'X-Auth-Email: '$cloudflare_auth_email'' \
     -H 'X-Auth-Key: '$cloudflare_auth_api_key'' \
     -H "Content-Type: application/json" \
@@ -61,8 +61,8 @@ if [ $new_ip != $old_ip ]
                 -H 'X-Auth-Key: '$cloudflare_auth_api_key'' \
                 -d '{
                 "type":"A",
-                "name":"'$CLOUDFLARE_DNS_NAME'",
-                "content":"'$new_ip'",
+                "name":"'"$CLOUDFLARE_DNS_NAME"'",
+                "content":"'"$new_ip"'",
                 "ttl":1,
                 "proxied":true
                 }'); \
